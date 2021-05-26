@@ -70,11 +70,17 @@ namespace Views
         {
             alumno.Nombre = txtNombre.Text;
 
-            if (ValidarAlumno(alumno))
+            AlumnoValidator validator = new AlumnoValidator();
+
+            foreach (ValidationFailure failure in validator.ValidarAlumno(alumno))
             {
-                mainController.InsertStudent(alumno);
-                MessageBox.Show("Alumno insertado satisfactoriamente.", "Message", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(failure.ErrorMessage, "Message", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
+
+            mainController.InsertStudent(alumno);
+
+            MessageBox.Show("Alumno insertado satisfactoriamente.", "Message", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
         public void EditarAlumno()
@@ -82,18 +88,27 @@ namespace Views
             alumno.Id = int.Parse(lblPrimaryId.Text);
             alumno.Nombre = txtNombre.Text;
 
-            if (ValidarAlumno(alumno))
+            AlumnoValidator validator = new AlumnoValidator();
+
+            foreach (ValidationFailure failure in validator.ValidarAlumno(alumno))
             {
-                mainController.UpdateStudent(alumno);
-                MessageBox.Show("Alumno editado satisfactoriamente.", "Message", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                LimpiarBotones();
+                MessageBox.Show(failure.ErrorMessage, "Message", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
+
+            mainController.UpdateStudent(alumno);
+
+            MessageBox.Show("Alumno editado satisfactoriamente.", "Message", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+            LimpiarBotones();
         }
 
         public void EliminarAlumno()
         {
             mainController.DeleteStudent(int.Parse(lblPrimaryId.Text));
+
             MessageBox.Show("Alumno eliminado satisfactoriamente.", "Message", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
             LimpiarBotones();
         }
 
@@ -108,23 +123,6 @@ namespace Views
             btnInsert.Enabled = true;
             btnUpdate.Enabled = false;
             btnDelete.Enabled = false;
-        }
-
-        public bool ValidarAlumno(AlumnoViewModel alumno)
-        {
-            AlumnoValidator validator = new AlumnoValidator();
-            ValidationResult results = validator.Validate(alumno);
-            IList<ValidationFailure> failures = results.Errors;
-
-            if (!results.IsValid)
-            {
-                foreach (ValidationFailure failure in failures)
-                {
-                    MessageBox.Show(failure.ErrorMessage, "Message", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return false;
-                }
-            }
-            return true;
         }
 
         private void btnSubir_Click(object sender, EventArgs e)

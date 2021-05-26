@@ -19,8 +19,17 @@ namespace Models
                 .WithMessage("La longitud máxima del nombre es de 30 caracteres.")
                 .MinimumLength(2)
                 .WithMessage("La longitud mínima del nombre es de 2 caracteres.")
-                .Matches(@"^[a-zA-Z-']*$")
+                .Matches(@"^[a-zA-Z ']*$")
                 .WithMessage("Sólo se aceptan letras, no números.");
+        }
+
+        public IList<ValidationFailure> ValidarAlumno(AlumnoViewModel alumno)
+        {
+            AlumnoValidator validator = new AlumnoValidator();
+            ValidationResult results = validator.Validate(alumno);
+            IList<ValidationFailure> failures = results.Errors;
+
+            return failures;
         }
     }
 }
