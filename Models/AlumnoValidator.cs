@@ -23,13 +23,19 @@ namespace Models
                 .WithMessage("Sólo se aceptan letras, no números.");
         }
 
-        public IList<ValidationFailure> ValidarAlumno(AlumnoViewModel alumno)
+        public List<string> ValidarAlumno(AlumnoViewModel alumno)
         {
             AlumnoValidator validator = new AlumnoValidator();
             ValidationResult results = validator.Validate(alumno);
             IList<ValidationFailure> failures = results.Errors;
+            List<string> errors = new List<string>();
 
-            return failures;
+            foreach (ValidationFailure failure in failures)
+            {
+                errors.Add(failure.ToString());
+            }
+
+            return errors;
         }
     }
 }

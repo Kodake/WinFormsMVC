@@ -113,17 +113,33 @@ namespace Controllers
             }
         }
 
-        public string ReadOCR(string pathImg)
+        public List<string> ReadOCR(string pathImg)
         {
             try
             {
                 using (var objOCR = OcrApi.Create())
                 {
-                    objOCR.Init(Patagames.Ocr.Enums.Languages.English);
+                    objOCR.Init(Patagames.Ocr.Enums.Languages.Spanish);
 
                     string plainText = objOCR.GetTextFromImage(pathImg);
+                    List<string> wordList = new List<string>();
 
-                    return plainText;
+                    string word = "";
+
+                    foreach (var item in plainText)
+                    {
+                        if (item.ToString() != "\n")
+                        {
+                            word = word + item;
+                        }
+                        else
+                        {
+                            wordList.Add(word);
+                            word = "";
+                        }
+                    }
+
+                    return wordList;
                 }
             }
             catch (Exception ex)

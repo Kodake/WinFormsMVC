@@ -11,6 +11,9 @@ namespace Views
     {
         MainController mainController = new MainController();
         AlumnoViewModel alumno = new AlumnoViewModel();
+        AlumnoValidator validator = new AlumnoValidator();
+        List<string> errors = new List<string>();
+        int initialCount = 0;
 
         public FormAlumnos()
         {
@@ -70,11 +73,13 @@ namespace Views
         {
             alumno.Nombre = txtNombre.Text;
 
-            AlumnoValidator validator = new AlumnoValidator();
+            errors = validator.ValidarAlumno(alumno);
 
-            foreach (ValidationFailure failure in validator.ValidarAlumno(alumno))
+            string errorMessage = string.Join("\n", errors.ToArray());
+
+            if (errors.Count > initialCount)
             {
-                MessageBox.Show(failure.ErrorMessage, "Message", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(errorMessage, "Message", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -88,11 +93,13 @@ namespace Views
             alumno.Id = int.Parse(lblPrimaryId.Text);
             alumno.Nombre = txtNombre.Text;
 
-            AlumnoValidator validator = new AlumnoValidator();
+            errors = validator.ValidarAlumno(alumno);
 
-            foreach (ValidationFailure failure in validator.ValidarAlumno(alumno))
+            string errorMessage = string.Join("\n", errors.ToArray());
+
+            if (errors.Count > initialCount)
             {
-                MessageBox.Show(failure.ErrorMessage, "Message", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(errorMessage, "Message", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -127,10 +134,12 @@ namespace Views
 
         private void btnSubir_Click(object sender, EventArgs e)
         {
-            DialogResult result = openFileDialog1.ShowDialog();
+            DialogResult result = openFileDialog.ShowDialog();
             if (result == DialogResult.OK)
             {
-                txtOCR.Text = mainController.ReadOCR(openFileDialog1.FileName);
+                var ocr =  mainController.ReadOCR(openFileDialog.FileName);
+                string textOCR = string.Join("\n", ocr.ToArray());
+                rchOCR.Text = textOCR;
             }
         }
     }

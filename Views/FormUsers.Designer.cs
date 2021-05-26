@@ -41,9 +41,9 @@ namespace Views
             this.dgvAlumnos = new System.Windows.Forms.DataGridView();
             this.tabOCR = new System.Windows.Forms.TabPage();
             this.btnSubir = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.txtOCR = new System.Windows.Forms.TextBox();
-            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.lblOCR = new System.Windows.Forms.Label();
+            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.rchOCR = new System.Windows.Forms.RichTextBox();
             this.tabControl1.SuspendLayout();
             this.tabAlumnos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAlumnos)).BeginInit();
@@ -180,9 +180,9 @@ namespace Views
             // 
             // tabOCR
             // 
+            this.tabOCR.Controls.Add(this.rchOCR);
             this.tabOCR.Controls.Add(this.btnSubir);
-            this.tabOCR.Controls.Add(this.label1);
-            this.tabOCR.Controls.Add(this.txtOCR);
+            this.tabOCR.Controls.Add(this.lblOCR);
             this.tabOCR.Location = new System.Drawing.Point(4, 29);
             this.tabOCR.Name = "tabOCR";
             this.tabOCR.Padding = new System.Windows.Forms.Padding(3);
@@ -203,27 +203,28 @@ namespace Views
             this.btnSubir.UseVisualStyleBackColor = false;
             this.btnSubir.Click += new System.EventHandler(this.btnSubir_Click);
             // 
-            // label1
+            // lblOCR
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(30, 80);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(113, 20);
-            this.label1.TabIndex = 18;
-            this.label1.Text = "Lectura OCR";
+            this.lblOCR.AutoSize = true;
+            this.lblOCR.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblOCR.Location = new System.Drawing.Point(30, 80);
+            this.lblOCR.Name = "lblOCR";
+            this.lblOCR.Size = new System.Drawing.Size(113, 20);
+            this.lblOCR.TabIndex = 18;
+            this.lblOCR.Text = "Lectura OCR";
             // 
-            // txtOCR
+            // openFileDialog
             // 
-            this.txtOCR.Location = new System.Drawing.Point(30, 110);
-            this.txtOCR.Name = "txtOCR";
-            this.txtOCR.ReadOnly = true;
-            this.txtOCR.Size = new System.Drawing.Size(170, 26);
-            this.txtOCR.TabIndex = 16;
+            this.openFileDialog.FileName = "openFileDialog";
             // 
-            // openFileDialog1
+            // rchOCR
             // 
-            this.openFileDialog1.FileName = "openFileDialog1";
+            this.rchOCR.Location = new System.Drawing.Point(30, 110);
+            this.rchOCR.Name = "rchOCR";
+            this.rchOCR.ReadOnly = true;
+            this.rchOCR.Size = new System.Drawing.Size(170, 150);
+            this.rchOCR.TabIndex = 19;
+            this.rchOCR.Text = "";
             // 
             // FormAlumnos
             // 
@@ -234,6 +235,7 @@ namespace Views
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.MaximumSize = new System.Drawing.Size(960, 600);
             this.Name = "FormAlumnos";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Alumnos";
             this.Load += new System.EventHandler(this.FormAlumnos_Load);
             this.tabControl1.ResumeLayout(false);
@@ -260,9 +262,9 @@ namespace Views
         private System.Windows.Forms.TabPage tabOCR;
         private System.Windows.Forms.Label lblPrimaryId;
         private System.Windows.Forms.Button btnSubir;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox txtOCR;
-        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.Label lblOCR;
+        private System.Windows.Forms.OpenFileDialog openFileDialog;
+        private System.Windows.Forms.RichTextBox rchOCR;
     }
 }
 
