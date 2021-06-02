@@ -97,7 +97,7 @@
       <Name>Controllers</Name>
     </ProjectReference>
     <ProjectReference Include="..\Models\Models.csproj">
-      <Project>{6a368b63-8889-4503-9ac0-4078f96ec2cd}</Project>
+      <Project>{6A368B63-8889-4503-9AC0-4078F96EC2CD}</Project>
       <Name>Models</Name>
     </ProjectReference>
   </ItemGroup>

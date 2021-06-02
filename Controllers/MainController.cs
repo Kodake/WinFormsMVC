@@ -10,6 +10,12 @@ namespace Controllers
 {
     public class MainController
     {
+        AlumnoViewModel alumno = new AlumnoViewModel();
+        private static List<string> errors;
+        private static readonly AlumnoValidator validator = new AlumnoValidator();
+        private string result = "";
+        private int initialCount = 0;
+
         public IEnumerable<AlumnoViewModel> GetStudents()
         {
             using (alumnosEntities db = new alumnosEntities())
@@ -31,85 +37,100 @@ namespace Controllers
                 Alumno student = (from d in db.Alumno
                                   where d.Id == id
                                   select d).FirstOrDefault<Alumno>();
-
                 return student;
             }
         }
 
-        public EntityState InsertStudent(AlumnoViewModel objAlumno)
+        public string InsertStudent(string nombre)
         {
+            result = "";
             try
             {
                 using (alumnosEntities db = new alumnosEntities())
                 {
-                    Alumno alumno = new Alumno()
+                    alumno.Nombre = nombre;
+                    errors = validator.ValidarAlumno(alumno);
+                    string errorMessage = string.Join("\n", errors.ToArray());
+                    if (errors.Count > initialCount)
                     {
-                        Nombre = objAlumno.Nombre
-                    };
+                        return errorMessage;
+                    }
+                    else
+                    {
+                        Alumno alumno = new Alumno()
+                        {
+                            Nombre = nombre
+                        };
+                        db.Alumno.Add(alumno);
+                        db.Entry(alumno).State = EntityState.Added;
+                        db.SaveChanges();
 
-                    db.Alumno.Add(alumno);
-
-                    db.Entry(alumno).State = EntityState.Added;
-
-                    db.SaveChanges();
-
-                    return db.Entry(alumno).State;
+                        return result = "Alumno insertado satisfactoriamente.";
+                    }
                 }
             }
             catch (Exception ex)
             {
-                throw ex;
+                return result = ex.Message;
             }
         }
 
-        public EntityState UpdateStudent(AlumnoViewModel objAlumno)
+        public string UpdateStudent(int id, string nombre)
         {
+            result = "";
             try
             {
                 using (alumnosEntities db = new alumnosEntities())
                 {
-                    Alumno alumno = new Alumno()
+                    alumno.Id = id;
+                    alumno.Nombre = nombre;
+                    errors = validator.ValidarAlumno(alumno);
+                    string errorMessage = string.Join("\n", errors.ToArray());
+                    if (errors.Count > initialCount)
                     {
-                        Id = objAlumno.Id,
-                        Nombre = objAlumno.Nombre
-                    };
+                        return errorMessage;
+                    }
+                    else
+                    {
+                        Alumno alumno = new Alumno()
+                        {
+                            Id = id,
+                            Nombre = nombre
+                        };
+                        db.Alumno.Add(alumno);
+                        db.Entry(alumno).State = EntityState.Modified;
+                        db.SaveChanges();
 
-                    db.Alumno.Add(alumno);
-
-                    db.Entry(alumno).State = EntityState.Modified;
-
-                    db.SaveChanges();
-
-                    return db.Entry(alumno).State;
+                        return result = "Alumno editado satisfactoriamente.";
+                    }
                 }
             }
             catch (Exception ex)
             {
-                throw ex;
+                return result = ex.Message;
             }
         }
 
-        public EntityState DeleteStudent(int id)
+        public string DeleteStudent(int id)
         {
+            result = "";
             try
             {
                 Alumno alumno = new Alumno()
                 {
                     Id = id
                 };
-
                 using (alumnosEntities db = new alumnosEntities())
                 {
                     db.Entry(alumno).State = EntityState.Deleted;
-
                     db.SaveChanges();
 
-                    return db.Entry(alumno).State;
+                    return result = "Alumno eliminado satisfactoriamente.";
                 }
             }
             catch (Exception ex)
             {
-                throw ex;
+                return result = ex.Message;
             }
         }
 
@@ -120,12 +141,9 @@ namespace Controllers
                 using (var objOCR = OcrApi.Create())
                 {
                     objOCR.Init(Patagames.Ocr.Enums.Languages.Spanish);
-
                     string plainText = objOCR.GetTextFromImage(pathImg);
                     List<string> wordList = new List<string>();
-
                     string word = "";
-
                     foreach (var item in plainText)
                     {
                         if (item.ToString() != "\n")
@@ -138,7 +156,6 @@ namespace Controllers
                             word = "";
                         }
                     }
-
                     return wordList;
                 }
             }
