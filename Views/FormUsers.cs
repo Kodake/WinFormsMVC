@@ -6,7 +6,7 @@ namespace Views
 {
     public partial class FormAlumnos : Form
     {
-        MainController mainController = new MainController();
+        AlumnosController alumnosController = new AlumnosController();
         string result;
 
         public FormAlumnos()
@@ -51,7 +51,7 @@ namespace Views
         {
             HabilitarBotones(false);
             int idAlumno = (int)dgvAlumnos.Rows[e.RowIndex].Cells["Id"].Value;
-            var student = mainController.GetStudentById(idAlumno);
+            var student = alumnosController.GetStudentById(idAlumno);
             lblPrimaryId.Text = student.Id.ToString();
             txtNombre.Text = student.Nombre;
         }
@@ -65,25 +65,25 @@ namespace Views
 
         public void ListarAlumnos()
         {
-            dgvAlumnos.DataSource = mainController.GetStudents();
+            dgvAlumnos.DataSource = alumnosController.GetStudents();
         }
 
         public void InsertarAlumno()
         {
-            result = mainController.InsertStudent(txtNombre.Text);
+            result = alumnosController.InsertStudent(txtNombre.Text);
             MessageBox.Show(result, "Message", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
         public void EditarAlumno()
         {
-            result = mainController.UpdateStudent(int.Parse(lblPrimaryId.Text), txtNombre.Text);
+            result = alumnosController.UpdateStudent(int.Parse(lblPrimaryId.Text), txtNombre.Text);
             MessageBox.Show(result, "Message", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             HabilitarBotones(true);
         }
 
         public void EliminarAlumno()
         {
-            result = mainController.DeleteStudent(int.Parse(lblPrimaryId.Text));
+            result = alumnosController.DeleteStudent(int.Parse(lblPrimaryId.Text));
             MessageBox.Show(result, "Message", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             HabilitarBotones(true);
         }
@@ -99,7 +99,7 @@ namespace Views
             DialogResult result = openFileDialog.ShowDialog();
             if (result == DialogResult.OK)
             {
-                var ocr = mainController.ReadOCR(openFileDialog.FileName);
+                var ocr = alumnosController.ReadOCR(openFileDialog.FileName);
                 string textOCR = string.Join("\n", ocr.ToArray());
                 rchOCR.Text = textOCR;
             }

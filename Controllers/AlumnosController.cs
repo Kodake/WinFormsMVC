@@ -5,10 +5,11 @@ using System.Linq;
 using Models.EF;
 using System.Data.Entity;
 using Patagames.Ocr;
+using Controllers.Interfaces;
 
 namespace Controllers
 {
-    public class MainController
+    public class AlumnosController: IAlumno
     {
         AlumnoViewModel alumno = new AlumnoViewModel();
         private static List<string> errors;
